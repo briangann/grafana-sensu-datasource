@@ -1,0 +1,9 @@
+grafana:
+  image: grafana/grafana
+  environment:
+    - GF_INSTALL_PLUGINS=grafana-piechart-panel
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./dist:/var/lib/grafana/plugins/briangann-sensu-datasource
+    - ../grafana-diagram:/var/lib/grafana/plugins/grafana-diagram

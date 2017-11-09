@@ -1,0 +1,41 @@
+{
+  "type": "datasource",
+  "name": "Sensu",
+  "id": "briangann-sensu-datasource",
+
+  "metrics": true,
+  "annotations": true,
+
+  "info": {
+    "description": "Grafana datasource plugin Sensu",
+    "author": {
+      "name": "Brian Gann",
+      "url": "https://github.com/briangann/grafana-sensu-datasource"
+    },
+    "keywords": ["sensu", "datasource"],
+    "logos": {
+      "small": "img/sensu-logo-flat-white.png",
+      "large": "img/sensu-logo-flat-white.png"
+    },
+    "links": [{
+        "name": "Project site",
+        "url": "https://github.com/briangann/grafana-sensu-datasource"
+      }, {
+        "name": "MIT License",
+        "url": "https://github.com/briangann/grafana-sensu-datasource/blob/master/LICENSE"
+      }],
+    "screenshots": [{
+      "name": "Showcase",
+      "path": "screenshots/sensu.png"
+    }, {
+      "name": "Options",
+      "path": "screenshots/options.png"
+    }],
+    "version": "0.0.1",
+    "updated": "2016-10-11"
+  },
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": []
+  }
+}

@@ -1,0 +1,210 @@
+<query-editor-row query-ctrl="ctrl" can-collapse="false" class="atlas-datasource-query-row">
+	<div class="gf-form-inline">
+		<div class="gf-form">
+			<label class="gf-form-label">Source Type</label>
+			<div class="gf-form-select-wrapper">
+				<select class="gf-form-input" ng-model="ctrl.target.sourceType" ng-options="c.value as c.text for c in ctrl.sourceTypes" ng-change="ctrl.sourceTypeChanged()">
+				</select>
+			</div>
+		</div>
+		<!-- Show the aggregate mode when the sourceType is aggregate and if there are dimensions -->
+		<div ng-if="ctrl.target.sourceType === 'aggregates' && ctrl.target.dimensions.length > 0">
+			<div class="gf-form">
+				<label class="gf-form-label">Aggregate Mode</label>
+				<div class="gf-form-select-wrapper">
+					<select class="gf-form-input" ng-model="ctrl.target.aggregateMode" ng-options="c.value as c.text for c in ctrl.aggregateModes" ng-change="ctrl.modeChanged()">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div ng-if="ctrl.target.sourceType === 'aggregates_json' && ctrl.target.dimensions.length > 0">
+			<div class="gf-form">
+				<label class="gf-form-label">Aggregate Mode</label>
+				<div class="gf-form-select-wrapper">
+					<select class="gf-form-input" ng-model="ctrl.target.aggregateMode" ng-options="c.value as c.text for c in ctrl.aggregateModes" ng-change="ctrl.modeChanged()">
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<!-- Show the client mode when the sourceType is Clients -->
+		<div ng-if="ctrl.target.sourceType === 'clients'">
+			<div class="gf-form">
+				<label class="gf-form-label">Client Query Mode</label>
+				<div class="gf-form-select-wrapper">
+					<select class="gf-form-input" ng-model="ctrl.target.clientQueryMode" ng-options="c.value as c.text for c in ctrl.clientQueryModes" ng-change="ctrl.modeChanged()">
+					</select>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div ng-if="ctrl.target.sourceType === 'event_metrics'">
+		<div class="gf-form">
+			<label class="gf-form-label">Event Metric Mode</label>
+			<div class="gf-form-select-wrapper">
+				<select class="gf-form-input" ng-model="ctrl.target.eventMetricMode" ng-options="c.value as c.text for c in ctrl.eventMetricModes" ng-change="ctrl.modeChanged()">
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div ng-if="ctrl.target.sourceType === 'events' || ctrl.target.sourceType === 'events_json'">
+		<div class="gf-form">
+			<editor-checkbox
+			  text="Hide Silenced Events"
+				model="ctrl.target.hideSilencedEvents"
+				change="ctrl.onChangeInternal()">
+			</editor-checkbox>
+		</div>
+
+		<!--
+		<div class="gf-form">
+			<gf-form-switch
+			  class="gf-form"
+				label-class="width-18"
+				label="Hide Silenced" checked="ctrl.target.hideSilencedEvents" on-change="ctrl.onChangeInternal()">
+			</gf-form-switch>
+		</div>
+	-->
+	</div>
+
+	<!-- Alias -->
+	<div class="gf-form">
+			<label class="gf-form-label">Alias</label>
+			<input type="text"
+						 style="width: 210px;"
+						 class="gf-form-input"
+						 ng-model="ctrl.target.alias"
+						 spellcheck="false"
+						 placeholder="metric alias"
+						 ng-model-onblur
+						 ng-change="ctrl.onChangeInternal()">
+	</div>
+
+	<!-- Dimensions -->
+	<div class="gf-form-inline">
+		<div class="gf-form">
+			<button class="btn btn-inverse" ng-click="ctrl.addDimension()">
+			<i class="fa fa-plus"></i>&nbsp; Dimension
+		</button>
+		</div>
+	</div>
+
+	<div class="gf-form-inline">
+		<div ng-if="ctrl.target.dimensions && ctrl.target.dimensions.length > 0">
+			<div class="gf-form-inline" ng-repeat="dimension in ctrl.target.dimensions">
+				<div class="gf-form">
+					<select class="gf-form-input gf-size-auto" id="dimensionSelect" ng-model="dimension.dimensionType" ng-options="c.value as c.text for c in ctrl.dimensionTypes[ctrl.target.sourceType]" ng-change="ctrl.onChangeInternal()" ng-required="true" style="width: 140px; margin-bottom: 0">
+				</select>
+					<metric-segment-model property="dimension.value" get-options="ctrl.getDimensionValues(dimension)" on-change="ctrl.onChangeInternal()" css-class="width-24">
+					</metric-segment-model>
+					<a class="pointer" tabindex="1" ng-click="ctrl.removeDimension(dimension)">
+						<i class="fa fa-remove"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Filters -->
+	<div class="gf-form-inline">
+		<div class="gf-form">
+			<button class="btn btn-inverse" ng-click="ctrl.addFilter()">
+			<i class="fa fa-plus"/></i>&nbsp; Filter
+		</button>
+		</div>
+	</div>
+
+	<div class="gf-form-inline">
+		<div ng-if="ctrl.target.filters && ctrl.target.filters.length > 0">
+			<div class="gf-form-inline" ng-repeat="filter in ctrl.target.filters">
+				<div class="gf-form">
+					<select
+						class="gf-form-input gf-size-auto"
+						id="filterSelect"
+						ng-model="filter.filterType"
+						ng-options="c.value as c.text for c in ctrl.filterTypes[ctrl.target.sourceType]"
+						ng-change="ctrl.onChangeInternal()"
+						ng-required="true"
+						style="width: 175px; margin-bottom: 0">
+					</select>
+
+
+<!--
+					  <label class="gf-form-label">{{filter.filterType}}</label>
+					  <label class="gf-form-label">{{filter}}</label>
+-->
+
+					<div class="gf-form-inline" ng-if="filter.filterType === 'regex'">
+						<div class="gf-form">
+								<input type="text"
+											 style="width: 210px;"
+											 class="gf-form-input"
+											 ng-model="filter.filterRegex"
+											 spellcheck="false"
+											 placeholder="regex"
+											 ng-model-onblur
+											 ng-change="ctrl.onChangeInternal()">
+								<label class="gf-form-label">RE Message: {{filter.filterMessage}}</label>
+						</div>
+						<div class="gf-form">
+								<label class="gf-form-label">Flags
+									<tip>
+											g = global match
+											i = ignore case
+											m = multiline
+											u = unicode
+											y = sticky
+									</tip>
+								</label>
+								<input type="text"
+											 style="width: 50px;"
+											 class="gf-form-input"
+											 ng-model="filter.filterRegexFlags"
+											 spellcheck="false"
+											 placeholder="i"
+											 ng-model-onblur
+											 ng-change="ctrl.onChangeInternal()">
+						</div>
+					</div>
+					<div ng-if="filter.filterType === 'fetch'">
+						<metric-segment-model
+						  property="filter.value"
+							get-options="ctrl.getFilterValues(filter)"
+							on-change="ctrl.onChangeInternal()"
+							css-class="width-24">
+						</metric-segment-model>
+					</div>
+					<div class="gf-form-inline" ng-if="filter.filterType === 'field'">
+						<div class="gf-form">
+								<input type="text"
+											 style="width: 210px;"
+											 class="gf-form-input"
+											 ng-model="filter.filterFieldName"
+											 spellcheck="false"
+											 placeholder="name"
+											 ng-model-onblur
+											 ng-change="ctrl.onChangeInternal()">
+						</div>
+						<div class="gf-form">
+								<input type="text"
+											 style="width: 210px;"
+											 class="gf-form-input"
+											 ng-model="filter.filterFieldValue"
+											 spellcheck="false"
+											 placeholder="value"
+											 ng-model-onblur
+											 ng-change="ctrl.onChangeInternal()">
+						</div>
+					</div>
+					<a class="pointer" tabindex="1" ng-click="ctrl.removeFilter(filter)">
+						<i class="fa fa-remove"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</query-editor-row>
