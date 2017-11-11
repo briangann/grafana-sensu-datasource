@@ -82,7 +82,7 @@ Select the textbox for metrics, and hints will be provided:
 
 ### Tunneling
 
-ssh -i ~/.ssh/environment.pem -L 4567:localhost:4567 gecloud@10.227.80.176
+ssh -i ~/.ssh/environment.pem -L 4567:localhost:4567 ec2-user@ec2-52-1-1-1.us-west-2.compute.amazonaws.com
 
 ### References
 
