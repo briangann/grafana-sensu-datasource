@@ -80,6 +80,23 @@ Choosing results, you will get a "dimensions" option to narrow the dataset.
 ![Dimensions](https://raw.githubusercontent.com/briangann/grafana-sensu-datasource/master/src/screenshots/sensu-datasource-dimensions.png)
 Select the textbox for metrics, and hints will be provided:
 
+
+#### Templating
+
+Support exists for using the following as template variables in Grafana:
+
+1. Clients
+2. Checks
+3. Aggregates
+
+Here is an example configuration adding `Client` as a template variable:
+
+![Template Config](src/screenshots/templating_config.png)
+
+Once added, you can reference the template variable as you would with any other Grafana datasource. Here is an example showing how to limit a table panel to show just the selected client:
+
+![Using "client" template variable](src/screenshots/using_template_var.png)
+
 ### Tunneling
 
 ssh -i ~/.ssh/environment.pem -L 4567:localhost:4567 ec2-user@ec2-52-1-1-1.us-west-2.compute.amazonaws.com
